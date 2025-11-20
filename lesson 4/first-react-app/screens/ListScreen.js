@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { FlatList } from "react-native-web";
+import { Button, FlatList } from "react-native-web";
 
 const studentav = [
     { name: "Nil", surname: "Bakija", age: 15 },
@@ -11,6 +11,16 @@ const studentav = [
 function ListScreen() {
     return (
         <View>
+            <Button
+                title="Click Me"
+                onPress={() => {
+                    console.log("Button Pressed");
+                }
+                }
+                color = "blue"
+                >
+
+            </Button>
             <Text style={styles.textStyle}>
                 Lista e studentav
             </Text>
@@ -21,7 +31,10 @@ function ListScreen() {
                     {item.name} {item.surname}, {item.age} vjec
                 </Text>  
 
+                
 
+
+                    
 
             )}
 
@@ -29,6 +42,7 @@ function ListScreen() {
 
 
             </FlatList>
+
         </View>
     );
 }
