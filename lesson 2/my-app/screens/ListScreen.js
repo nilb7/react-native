@@ -16,6 +16,10 @@ const ListScreen = () => {
       <Text style={styles.textStyle}>List of Students</Text>
       <Button title="Press Me" 
       onPress={() => console.log("Button Pressed!", count++)} />
+      <Button
+      title="Another Button"
+      onPress={() => navigation.navigate("Main")}>
+      </Button>
        
 
       
@@ -29,6 +33,7 @@ const ListScreen = () => {
           </Text>
         )}
       />
+
 
       <TouchableOpacity
       
@@ -46,7 +51,7 @@ const ListScreen = () => {
 const styles = StyleSheet.create({
   textStyle: {
     fontSize: 18,
-    marginVertical: 5,
+    marginVertical: 5,color: 'blue'
   },
   btnText: {
     fontSize: 22,
@@ -61,6 +66,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 10,
   }
+  
+ 
+
 });
 
 export default ListScreen;

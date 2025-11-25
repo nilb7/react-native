@@ -7,26 +7,29 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "./screens/MainScreen";
 
 import ListScreen from "./screens/ListScreen"; // 👈 like ListScreen in the example
+import nilScreen from "./screens/nilScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <Stack.Navigator
-    //     initialRouteName="List"
-    //     screenOptions={{
-    //       title: "App",
-    //     }}
-    //   >
-    //     <Stack.Screen name="Main" component={MainScreen} />
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Main"
+        screenOptions={{
+          title: "App",
+        }}
+      >
+        <Stack.Screen name="Main" component={MainScreen} />
 
-    //     <Stack.Screen name="List" component={ListScreen} />
-    //   </Stack.Navigator>
+        <Stack.Screen name="List" component={ListScreen} />
 
-    //   <StatusBar style="auto" />
-    // </NavigationContainer>
-    <ListScreen></ListScreen>
+         <Stack.Screen name="nil" component={nilScreen} />
+      </Stack.Navigator>
+
+      <StatusBar style="auto" />
+    </NavigationContainer>
+    
   );
 }
 
