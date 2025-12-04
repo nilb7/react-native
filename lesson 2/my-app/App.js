@@ -9,6 +9,7 @@ import MainScreen from "./screens/MainScreen";
 import ListScreen from "./screens/ListScreen"; // 👈 like ListScreen in the example
 import StudentDetail from "./components/StudentDetail";
 import StudenScreen from "./screens/StudentScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -31,8 +32,8 @@ export default function App() {
 
     //   <StatusBar style="auto" />
     // </NavigationContainer>
-    <StudenScreen ></StudenScreen>
-    
+    // <StudenScreen ></StudenScreen>
+    <ProfileScreen></ProfileScreen>
   );
 }
 
