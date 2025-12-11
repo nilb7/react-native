@@ -11,6 +11,7 @@ import StudentDetail from "./components/StudentDetail";
 import StudenScreen from "./screens/StudentScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import BoxScreen from "./screens/BoxScreen";
+import PostsScreen from "./screens/PostsScrenn";
 
 
 const Stack = createNativeStackNavigator();
@@ -34,7 +35,8 @@ export default function App() {
     //   <StatusBar style="auto" />
     // </NavigationContainer>
     // <StudenScreen ></StudenScreen>
-    <BoxScreen></BoxScreen>
+    //<BoxScreen></BoxScreen>
+    <PostsScreen></PostsScreen>
     
   );
 }
