@@ -9,23 +9,25 @@ import StudentScreen from "./screens/StudentScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import BoxScreen from "./screens/BoxScreen";
 import PostsScreen from "./screens/PostsScreen";
+import FetchChallenge from "./screens/FetchChallenge";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Main"
-        screenOptions={{
-          title: "My App",
-        }}
-      >
-        <Stack.Screen name="Main" component={MainScreen} />
-        <Stack.Screen name="List" component={PostsScreen} />
-      </Stack.Navigator>
+    // <NavigationContainer>
+    //   <Stack.Navigator
+    //     initialRouteName="Main"
+    //     screenOptions={{
+    //       title: "My App",
+    //     }}
+    //   >
+    //     <Stack.Screen name="Main" component={MainScreen} />
+    //     <Stack.Screen name="List" component={PostsScreen} />
+    //   </Stack.Navigator>
 
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    //   <StatusBar style="auto" />
+    // </NavigationContainer>
+    <FetchChallenge></FetchChallenge>
   );
 }

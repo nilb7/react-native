@@ -6,7 +6,7 @@ class PostsScreen extends React.Component {
     super(props);
 
     this.state = {
-      posts: [], // will store the fetched JSON data
+      comments: [], // will store the fetched JSON data
     };
   }
 
@@ -19,7 +19,7 @@ class PostsScreen extends React.Component {
 
       this.setState({ posts: jsonData });
     } catch (error) {
-      console.log("Error fetching posts:", error);
+      console.log("Error fetching comments:", error);
     }
   }
 
@@ -27,7 +27,7 @@ class PostsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.posts}
+          data={this.state.comments}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.postContainer}>
