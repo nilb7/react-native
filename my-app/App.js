@@ -10,6 +10,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import BoxScreen from "./screens/BoxScreen";
 import PostsScreen from "./screens/PostsScreen";
 import FetchChallenge from "./screens/FetchChallenge";
+import CountriesScreen from "./screens/CountriesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ export default function App() {
 
     //   <StatusBar style="auto" />
     // </NavigationContainer>
-    <FetchChallenge></FetchChallenge>
+    // <FetchChallenge></FetchChallenge>
+    <CountriesScreen></CountriesScreen>
   );
 }
