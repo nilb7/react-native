@@ -1,0 +1,56 @@
+[
+    {
+        "id":1,
+        "name":"Prishtina",
+        "countryCode":"ks",
+        "population":258163,
+        "description":"Kryeqyteti i Kosoves"
+    },
+     {
+        "id":2,
+        "name":"Peja",
+        "countryCode":"ks",
+        "population":258163,
+        "description":"qyteti me i bukur"
+    },
+     {
+        "id":3,
+        "name":"Malisheva",
+        "countryCode":"ks",
+        "population":258163,
+        "description":"something"
+    },
+     {
+        "id":4,
+        "name":"Mitrovica",
+        "countryCode":"ks",
+        "population":258163,
+        "description":"qyteti i bukur"
+    },
+     {
+        "id":5,
+        "name":"Lipjan",
+        "countryCode":"ks",
+        "population":258163,
+        "description":"Kryeqyteti i Kosoves"
+    },
+     {
+        "id":6,
+        "name":"Podujeve",
+        "countryCode":"ks",
+        "population":258163,
+        "description":"afer Prishtines"
+    },
+     {
+        "id":7,
+        "name":"Gjakova",
+        "countryCode":"ks",
+        "population":258163,
+        "description":"Kryeqyteti i Kosoves"
+    }
+    
+
+
+
+
+]
