@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Swiper from "react-native-swiper";
+import Icon from "../components/icons";
 
 const Home = () => {
   const navigation = useNavigation();
@@ -54,16 +55,38 @@ const Home = () => {
         </View>
 
       </Swiper>
+
+      <View style={styles.IconsContainer}>
+        <Icon name="cellphone" iconText="Iphone" />
+        <Icon name="android" iconText="Samsung" />
+        <Icon name="laptop" iconText="Laptop" />
+      </View>
+
+      <View style={styles.IconsContainer}>
+        <Icon name="tablet-iphone" iconText="Tablet" />
+        <Icon name="mouse" iconText="Mouse" />
+        <Icon name="keyboard-outile" iconText="Laptop" />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+   IconsContainer:{
+    width:"90%",
+    alignSelf:"center",
+    marginTop:30,
+    flexDirection:"row",
+    justifyContent:"space-between"
+
+
+  },
   container: {
     flex: 1,
   },
   swiper: {
     flex: 1,
+    height: 300
   },
   slide: {
     flex: 1,
