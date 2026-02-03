@@ -1,152 +1,117 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
 import Swiper from "react-native-swiper";
-import Icon from "../components/icons";
+import Icon from "../components/Icons";
+
+
+import Item from "../components/item";
+import data from "../data/data.json"
+import { FlatList } from "react-native-web";
 
 const Home = () => {
-  const navigation = useNavigation();
 
+  const [products,setProducts]=useState([]);
+
+  useEffect(()=>{
+    setProducts(data.popularproducts);
+  },[])
+
+
+  
   return (
-    <View style={styles.container}>
-      <Swiper
+    <FlatList 
+    ListHeaderComponent={
+      <>
+      
+        <Swiper
         style={styles.swiper}
-        showsPagination={true}
-        dotColor="rgba(255,255,255,0.5)"
-        activeDotColor="#fff"
-        paginationStyle={styles.pagination}
-        loop={true}
-        autoplay={true}
-        autoplayTimeout={4}>
-
+        showsPagination
+        dotColor="#999"
+        activeDotColor="#007AFF"
+      >
         <View style={styles.slide}>
-          <Image source={require("../../assets/dog.png")} style={styles.slideImage} resizeMode="cover" />
-          <View style={styles.overlay}>
-            <Text style={styles.slideTitle}>Welcome to Our App</Text>
-            <Text style={styles.slideText}>Discover amazing features and explore new possibilities</Text>
-          </View>
+          <Image
+            source={require("../../assets/image1.png")}
+            style={styles.slideImage}
+            resizeMode="cover"
+          />
         </View>
-
         <View style={styles.slide}>
-          <Image source={require("../../assets/icon.png")} style={styles.slideImage} resizeMode="cover" />
-          <View style={styles.overlay}>
-            <Text style={styles.slideTitle}>Explore Features</Text>
-            <Text style={styles.slideText}>Find everything you need in one place</Text>
-          </View>
+          <Image
+            source={require("../../assets/image1.jpg")}
+            style={styles.slideImage}
+            resizeMode="cover"
+          />
         </View>
-
         <View style={styles.slide}>
-          <Image source={require("../../assets/adaptive-icon.png")} style={styles.slideImage} resizeMode="cover" />
-          <View style={styles.overlay}>
-            <Text style={styles.slideTitle}>Stay Connected</Text>
-            <Text style={styles.slideText}>Keep up with the latest updates and news</Text>
-          </View>
+          <Image
+            source={require("../../assets/image1.jpg")}
+            style={styles.slideImage}
+            resizeMode="cover"
+          />
         </View>
-
-        <View style={styles.slide}>
-          <Image source={require("../../assets/splash-icon.png")} style={styles.slideImage} resizeMode="cover" />
-          <View style={styles.overlay}>
-            <Text style={styles.slideTitle}>Get Started</Text>
-            <Text style={styles.slideText}>Ready to begin your journey?</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('About')}>
-              <Text style={styles.buttonText}>Learn More</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
       </Swiper>
 
-      <View style={styles.IconsContainer}>
-        <Icon name="cellphone" iconText="Iphone" />
+      <View style={styles.iconsContainer}>
+        <Icon name="cellphone-iphone" iconText="iPhone" />
         <Icon name="android" iconText="Samsung" />
         <Icon name="laptop" iconText="Laptop" />
       </View>
 
-      <View style={styles.IconsContainer}>
-        <Icon name="tablet-iphone" iconText="Tablet" />
+      <View style={styles.iconsContainer}>
+        <Icon name="tablet" iconText="Tablet" />
         <Icon name="mouse" iconText="Mouse" />
-        <Icon name="keyboard-outile" iconText="Laptop" />
+        <Icon name="keyboard-outline" iconText="Keyboard" />
       </View>
-    </View>
+      
+      
+      </>
+
+
+
+    } 
+    data={products}
+    keyExtractor={(item)=>item.id.toString()}
+    renderItem={({item})=><Item item={item}/>}
+    contentContainerStyle={styles.listContainer}
+   
+    
+   
+
+
+    />
+    
   );
 };
 
 const styles = StyleSheet.create({
-   IconsContainer:{
-    width:"90%",
-    alignSelf:"center",
-    marginTop:30,
-    flexDirection:"row",
-    justifyContent:"space-between"
-
-
-  },
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   swiper: {
-    flex: 1,
-    height: 300
+    height: 200,
   },
   slide: {
     flex: 1,
-    position: 'relative',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
   slideImage: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.6,
-    position: 'absolute',
+    width: "90%",
+    height: "90%",
+    borderRadius: 10,
   },
-  overlay: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    paddingHorizontal: 30,
-    paddingVertical: 40,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+  iconsContainer: {
+    width: "90%",
+    alignSelf: "center",
+    marginTop: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  slideTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 10,
-    textShadowColor: 'rgba(0,0,0,0.8)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
-  },
-  slideText: {
-    fontSize: 16,
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 20,
-    textShadowColor: 'rgba(0,0,0,0.6)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 30,
-    paddingVertical: 12,
-    borderRadius: 25,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  pagination: {
-    bottom: 20,
-  },
+
+  
 });
 
 export default Home;

@@ -1,0 +1,28 @@
+{
+    "popularproducts":[
+        {
+            "id":1,
+            "name":"iPad 8",
+            "category":"Tablet",
+            "price":"$800",
+            "image":"https://images.unsplash.com/photo-1525101238777-8878781fc06d",
+            "description":"The iPad 8 is a powerful tablet with a 10.2-inch Retina display, A12 Bionic chip, and support for Apple Pencil and Smart Keyboard."
+        },
+        {
+            "id":2,
+            "name":"iPad X",
+            "category":"Tablet",
+            "price":"$750",
+            "image":"https://images.unsplash.com/photo-1530319067432-f2a729c03db5",
+            "description":"The iPad 8 is a powerful tablet with a 10.2-inch Retina display, A12 Bionic chip, and support for Apple Pencil and Smart Keyboard."
+        },
+        {
+            "id":3,
+            "name":"Samsung s21",
+            "category":"Tablet",
+            "price":"$990",
+            "image":"https://images.unsplash.com/photo-1610945264803-c22b62d2a7b3",
+            "description":"The iPad 8 is a powerful tablet with a 10.2-inch Retina display, A12 Bionic chip, and support for Apple Pencil and Smart Keyboard."
+        }
+    ]
+}
