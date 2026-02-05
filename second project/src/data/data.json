@@ -24,5 +24,32 @@
             "image":"https://images.unsplash.com/photo-1610945264803-c22b62d2a7b3",
             "description":"The iPad 8 is a powerful tablet with a 10.2-inch Retina display, A12 Bionic chip, and support for Apple Pencil and Smart Keyboard."
         }
-    ]
+    ],
+    "ios": [
+
+    {
+      "id": 1,
+      "name": "iPhone X",
+      "category": "iOS",
+      "price": "$750",
+      "image": "https://images.unsplash.com/photo-1530319067432-f2a729c03db5",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, quis nostrud exercitation."
+    },
+    {
+      "id": 2,
+      "name": "iPhone 12",
+      "category": "iOS",
+      "price": "$999",
+      "image": "https://images.unsplash.com/photo-1589492477829-5e65395b66cc",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, quis nostrud exercitation."
+    },
+    {
+      "id": 3,
+      "name": "iPhone 12 Pro",
+      "category": "iOS",
+      "price": "$999",
+      "image": "https://images.unsplash.com/photo-1570963904764-fff96652bbd",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, quis nostrud exercitation."
+    }
+  ]
 }
