@@ -3,6 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { MainStackNavigator, AboutStackNavigator } from "./StackNavigator";
+import IosStackNavigator from "./IosStackNavigator";
+import AndroidStackNavigator from "./AndroidStackNavigator";
+import LenovoStackNavigator from "./LenovoStackNavigator";
 import Ios from "../screens/Ios";
 
 const Tab = createBottomTabNavigator();
@@ -41,10 +44,39 @@ const BottomTabNavigator = () => {
         name="iOS"
         component={IosStackNavigator}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: "Android ",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="apple"
+              color={color}
+              size={size ?? 26}
+            />
+          ),
+        }}
+      />
+       <Tab.Screen
+        name="Android"
+        component={AndroidStackNavigator}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="phone"
+              color={color}
+              size={size ?? 26}
+            />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Lenovo"
+        component={LenovoStackNavigator}
+        options={{
+          tabBarLabel: "Lenovo",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="laptop"
               color={color}
               size={size ?? 26}
             />

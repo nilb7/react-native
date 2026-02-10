@@ -4,7 +4,7 @@ import Swiper from "react-native-swiper";
 import Icon from "../components/Icons";
 
 
-import Item from "../components/item";
+import Item from "../components/Item";
 import data from "../data/data.json"
 import { FlatList } from "react-native-web";
 
