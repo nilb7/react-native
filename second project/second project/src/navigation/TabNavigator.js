@@ -4,9 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { MainStackNavigator, AboutStackNavigator } from "./StackNavigator";
 import IosStackNavigator from "./IosStackNavigator";
-import AndroidStackNavigator from "./AndroidStackNavigator";
-import LenovoStackNavigator from "./LenovoStackNavigator";
-import Ios from "../screens/Ios";
+import AndroidStackNavigator from "./AndroidStackNavigaror";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,17 +13,46 @@ const BottomTabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "white",
+        tabBarActiveTintColor: "#00BCD4",
         tabBarInactiveTintColor: "lightgray",
         tabBarShowLabel: true,
         tabBarStyle: {
-          backgroundColor: "#2c3e50",
+          backgroundColor: "#2C3E50",
         },
         tabBarLabelStyle: {
           fontSize: 12,
         },
       }}
     >
+      <Tab.Screen
+        name="Ios"
+        component={IosStackNavigator}
+        options={{
+          tabBarLabel: "iOS",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="cellphone-iphone"
+              size={26}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+       <Tab.Screen
+        name="Android"
+        component={AndroidStackNavigator}
+        options={{
+          tabBarLabel: "Androic",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="phone"
+              size={26}
+              color={color}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Home"
         component={MainStackNavigator}
@@ -34,49 +61,6 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="home"
-              color={color}
-              size={size ?? 26}
-            />
-          ),
-        }}
-      />
-       <Tab.Screen
-        name="iOS"
-        component={IosStackNavigator}
-        options={{
-          tabBarLabel: "Android ",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="apple"
-              color={color}
-              size={size ?? 26}
-            />
-          ),
-        }}
-      />
-       <Tab.Screen
-        name="Android"
-        component={AndroidStackNavigator}
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="phone"
-              color={color}
-              size={size ?? 26}
-            />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Lenovo"
-        component={LenovoStackNavigator}
-        options={{
-          tabBarLabel: "Lenovo",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="laptop"
               color={color}
               size={size ?? 26}
             />
