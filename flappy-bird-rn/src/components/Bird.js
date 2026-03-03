@@ -1,7 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 
-
 const Bird = ({ birdBottom }) => {
   return (
     <View
@@ -17,6 +16,4 @@ const Bird = ({ birdBottom }) => {
   );
 };
 
-
 export default Bird;
-
