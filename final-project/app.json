@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "final-project",
-    "slug": "final-project",
+    "name": "Crypto Exchange",
+    "slug": "crypto-exchange",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
