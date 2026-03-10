@@ -12,6 +12,8 @@ import CryptoDetailScreen from './screens/CryptoDetailScreen';
 import PortfolioScreen from './screens/PortfolioScreen';
 import MarketOverviewScreen from './screens/MarketOverviewScreen';
 import ContactUsScreen from './screens/ContactUsScreen';
+import AdvancedTradingScreen from './screens/AdvancedTradingScreen';
+import AuthScreen from './screens/AuthScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,6 +33,8 @@ function HomeStack() {
     >
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="CryptoDetail" component={CryptoDetailScreen} options={{ title: 'Crypto Details' }} />
+      <Stack.Screen name="AdvancedTrading" component={AdvancedTradingScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Auth" component={AuthScreen} options={{ title: 'Create Account' }} />
       <Stack.Screen name="ContactUs" component={ContactUsScreen} options={{ title: 'Contact Us' }} />
     </Stack.Navigator>
   );

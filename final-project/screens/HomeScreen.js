@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import ThemeToggle from '../components/ThemeToggle';
 import BurgerMenu from '../components/BurgerMenu';
@@ -10,10 +12,27 @@ const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const [cryptos, setCryptos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     fetchCryptos();
+    getCurrentUser();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getCurrentUser();
+    }, [])
+  );
+
+  const getCurrentUser = async () => {
+    try {
+      const user = await AsyncStorage.getItem('currentUser');
+      if (user) setCurrentUser(user);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const fetchCryptos = async () => {
     try {
@@ -101,8 +120,24 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles(colors).logo}>₿</Text>
           <Text style={styles(colors).title}>Crypto Exchange</Text>
         </View>
-        <ThemeToggle />
+        <View style={styles(colors).headerRight}>  
+          {currentUser ? (
+            <TouchableOpacity onPress={async () => { await AsyncStorage.removeItem('currentUser'); setCurrentUser(null); }} style={styles(colors).authButton}>
+              <Text style={styles(colors).authButtonText}>Logout</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => navigation.navigate('Auth', { mode: 'signup' })} style={styles(colors).authButton}>
+              <Text style={styles(colors).authButtonText}>Sign Up</Text>
+            </TouchableOpacity>
+          )}
+          <ThemeToggle />
+        </View>
       </View>
+      {currentUser && (
+        <View style={styles(colors).welcomeContainer}>
+          <Text style={styles(colors).welcomeText}>Welcome, {currentUser}!</Text>
+        </View>
+      )}
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} style={styles(colors).loader} />
       ) : (
@@ -199,6 +234,31 @@ const styles = (colors) => StyleSheet.create({
   loader: {
     flex: 1,
     justifyContent: 'center',
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  authButton: {
+    marginRight: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: colors.primary,
+    borderRadius: 6,
+  },
+  authButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+  welcomeContainer: {
+    padding: 10,
+    backgroundColor: colors.card,
+    alignItems: 'center',
+  },
+  welcomeText: {
+    color: colors.text,
+    fontSize: 16,
+    fontWeight: '500',
   },
 });
 

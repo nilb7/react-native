@@ -127,6 +127,9 @@ const CryptoDetailScreen = ({ route, navigation }) => {
           <TouchableOpacity style={[styles(colors).button, styles(colors).sellButton]} onPress={handleSell}>
             <Text style={styles(colors).buttonText}>Sell</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={[styles(colors).button, styles(colors).chartButton]} onPress={() => navigation.navigate('AdvancedTrading', { crypto })}>
+            <Text style={styles(colors).buttonText}>Chart</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <Footer />
@@ -201,7 +204,7 @@ const styles = (colors) => StyleSheet.create({
   button: {
     padding: 15,
     borderRadius: 10,
-    width: 120,
+    width: 100,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -214,6 +217,9 @@ const styles = (colors) => StyleSheet.create({
   },
   sellButton: {
     backgroundColor: colors.negative,
+  },
+  chartButton: {
+    backgroundColor: colors.primary,
   },
   buttonText: {
     color: '#fff',
