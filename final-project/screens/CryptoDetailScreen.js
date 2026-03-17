@@ -11,10 +11,21 @@ const CryptoDetailScreen = ({ route, navigation }) => {
   const { crypto } = route.params;
   const { colors } = useTheme();
   const [chartData, setChartData] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     fetchChartData();
+    loadCurrentUser();
   }, []);
+
+  const loadCurrentUser = async () => {
+    try {
+      const user = await AsyncStorage.getItem('currentUser');
+      setCurrentUser(user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchChartData = async () => {
     try {
@@ -27,6 +38,10 @@ const CryptoDetailScreen = ({ route, navigation }) => {
   };
 
   const handleBuy = async () => {
+    if (!currentUser) {
+      Alert.alert('Error', 'Please log in to buy crypto');
+      return;
+    }
     const amount = 1; // For simplicity, buying 1 unit. You can add input for amount later.
     const holding = {
       id: crypto.id,
@@ -37,12 +52,17 @@ const CryptoDetailScreen = ({ route, navigation }) => {
       buyDate: new Date().toISOString(),
     };
     try {
-      const portfolio = await AsyncStorage.getItem('portfolio');
+      const portfolio = await AsyncStorage.getItem('portfolio_' + currentUser);
       const portfolioArray = portfolio ? JSON.parse(portfolio) : [];
-      portfolioArray.push(holding);
-      await AsyncStorage.setItem('portfolio', JSON.stringify(portfolioArray));
+      const existingIndex = portfolioArray.findIndex(holding => holding.id === crypto.id);
+      if (existingIndex !== -1) {
+        portfolioArray[existingIndex].amount += amount;
+      } else {
+        portfolioArray.push(holding);
+      }
+      await AsyncStorage.setItem('portfolio_' + currentUser, JSON.stringify(portfolioArray));
       Alert.alert('Success', `Bought ${amount} ${crypto.name} at $${crypto.current_price}`);
-      navigation.navigate('Portfolio');
+      navigation.getParent().navigate('Portfolio');
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to save to portfolio');
@@ -50,8 +70,12 @@ const CryptoDetailScreen = ({ route, navigation }) => {
   };
 
   const handleSell = async () => {
+    if (!currentUser) {
+      Alert.alert('Error', 'Please log in to sell crypto');
+      return;
+    }
     try {
-      const portfolio = await AsyncStorage.getItem('portfolio');
+      const portfolio = await AsyncStorage.getItem('portfolio_' + currentUser);
       const portfolioArray = portfolio ? JSON.parse(portfolio) : [];
       const index = portfolioArray.findIndex(holding => holding.id === crypto.id);
       if (index !== -1) {
@@ -61,9 +85,9 @@ const CryptoDetailScreen = ({ route, navigation }) => {
         } else {
           portfolioArray.splice(index, 1);
         }
-        await AsyncStorage.setItem('portfolio', JSON.stringify(portfolioArray));
+        await AsyncStorage.setItem('portfolio_' + currentUser, JSON.stringify(portfolioArray));
         Alert.alert('Success', `Sold 1 ${crypto.name} at $${crypto.current_price}`);
-        navigation.navigate('Portfolio');
+        navigation.getParent().navigate('Portfolio');
       } else {
         Alert.alert('Error', `You don't have any ${crypto.name} to sell`);
       }

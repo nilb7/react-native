@@ -10,30 +10,51 @@ import Footer from '../components/Footer';
 const PortfolioScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const [portfolio, setPortfolio] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useFocusEffect(
     React.useCallback(() => {
-      loadPortfolio();
+      loadData();
     }, [])
   );
 
-  const loadPortfolio = async () => {
+  const loadCurrentUser = async () => {
     try {
-      const data = await AsyncStorage.getItem('portfolio');
-      if (data) {
-        setPortfolio(JSON.parse(data));
-      } else {
-        setPortfolio([]);
-      }
+      const user = await AsyncStorage.getItem('currentUser');
+      setCurrentUser(user);
+      return user;
     } catch (error) {
       console.error(error);
+      return null;
     }
+  };
+
+  const loadPortfolio = async (user) => {
+    if (user) {
+      try {
+        const data = await AsyncStorage.getItem('portfolio_' + user);
+        if (data) {
+          setPortfolio(JSON.parse(data));
+        } else {
+          setPortfolio([]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setPortfolio([]);
+    }
+  };
+
+  const loadData = async () => {
+    const user = await loadCurrentUser();
+    await loadPortfolio(user);
   };
 
   const handleBuyMore = async (item) => {
     const amount = 1;
     try {
-      const portfolio = await AsyncStorage.getItem('portfolio');
+      const portfolio = await AsyncStorage.getItem('portfolio_' + currentUser);
       const portfolioArray = portfolio ? JSON.parse(portfolio) : [];
       const existingIndex = portfolioArray.findIndex(holding => holding.id === item.id);
       
@@ -53,7 +74,7 @@ const PortfolioScreen = ({ navigation }) => {
         portfolioArray.push(newHolding);
       }
       
-      await AsyncStorage.setItem('portfolio', JSON.stringify(portfolioArray));
+      await AsyncStorage.setItem('portfolio_' + currentUser, JSON.stringify(portfolioArray));
       Alert.alert('Success', `Bought ${amount} ${item.name}`);
       loadPortfolio();
     } catch (error) {
@@ -64,14 +85,14 @@ const PortfolioScreen = ({ navigation }) => {
 
   const handleSell = async (item, index) => {
     try {
-      const portfolio = await AsyncStorage.getItem('portfolio');
+      const portfolio = await AsyncStorage.getItem('portfolio_' + currentUser);
       const portfolioArray = portfolio ? JSON.parse(portfolio) : [];
       if (portfolioArray[index].amount > 1) {
         portfolioArray[index].amount -= 1;
       } else {
         portfolioArray.splice(index, 1);
       }
-      await AsyncStorage.setItem('portfolio', JSON.stringify(portfolioArray));
+      await AsyncStorage.setItem('portfolio_' + currentUser, JSON.stringify(portfolioArray));
       Alert.alert('Success', `Sold 1 ${item.name}`);
       loadPortfolio();
     } catch (error) {
@@ -110,6 +131,11 @@ const PortfolioScreen = ({ navigation }) => {
         <Text style={styles(colors).title}>Portfolio</Text>
         <ThemeToggle />
       </View>
+      {currentUser && (
+        <View style={styles(colors).userInfo}>
+          <Text style={styles(colors).userInfoText}>Profile: {currentUser}</Text>
+        </View>
+      )}
       {portfolio.length > 0 ? (
         <FlatList
           data={portfolio}
@@ -197,6 +223,18 @@ const styles = (colors) => StyleSheet.create({
     fontSize: 18,
     color: colors.textSecondary,
     textAlign: 'center',
+  },
+  userInfo: {
+    padding: 15,
+    backgroundColor: colors.card,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  userInfoText: {
+    fontSize: 16,
+    color: colors.text,
+    fontWeight: '500',
   },
 });
 

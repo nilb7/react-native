@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Button } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import ThemeToggle from '../components/ThemeToggle';
@@ -7,9 +8,12 @@ import BurgerMenu from '../components/BurgerMenu';
 
 const AuthScreen = ({ navigation }) => {
   const { colors } = useTheme();
+  const route = useRoute();
+  const mode = route.params?.mode;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+  const [isSignup, setIsSignup] = useState(mode !== 'login'); // true for signup, false for login
   const [storedUsers, setStoredUsers] = useState([]);
 
   React.useEffect(() => {
@@ -20,33 +24,40 @@ const AuthScreen = ({ navigation }) => {
     loadUsers();
   }, []);
 
+  React.useEffect(() => {
+    if (!isSignup) {
+      setConfirm('');
+    }
+  }, [isSignup]);
+
   const handleSignup = async () => {
     console.log('handleSignup called with', email, password, confirm);
-    Alert.alert('Info', 'Signing up...');
+    console.log('Alert: Info - Signing up...');
     if (!email || !password || !confirm) {
-      Alert.alert('Validation', 'Please complete all fields.');
+      console.log('Alert: Validation - Please complete all fields.');
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert('Validation', 'Please enter a valid email address.');
+      console.log('Alert: Validation - Please enter a valid email address.');
       return;
     }
     if (password.length < 6) {
-      Alert.alert('Validation', 'Password must be at least 6 characters.');
+      console.log('Alert: Validation - Password must be at least 6 characters.');
       return;
     }
     if (password !== confirm) {
-      Alert.alert('Validation', 'Passwords do not match.');
+      console.log('Alert: Validation - Passwords do not match.');
       return;
     }
 
     try {
+      console.log('Validations passed, trying to store user');
       const stored = await AsyncStorage.getItem('users');
       const users = stored ? JSON.parse(stored) : [];
 
       if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-        Alert.alert('Error', 'An account with that email already exists.');
+        console.log('Alert: Error - An account with that email already exists.');
         return;
       }
 
@@ -55,19 +66,18 @@ const AuthScreen = ({ navigation }) => {
       await AsyncStorage.setItem('currentUser', email.toLowerCase());
       setStoredUsers(users);
       console.log('signup successful, users:', users);
-      Alert.alert('Success', `Account created for ${email}`);
-      const verify = await AsyncStorage.getItem('users');
-      console.log('storage now contains:', verify);
-      navigation.goBack();
+      console.log('Alert: Success - Account created for ' + email);
+      navigation.getParent().navigate('Portfolio');
     } catch (err) {
       console.error('signup error', err);
-      Alert.alert('Error', 'Failed to create account.');
+      console.log('Alert: Error - Failed to create account.');
     }
   };
 
   const handleLogin = async () => {
+    console.log('handleLogin called with', email, password);
     if (!email || !password) {
-      Alert.alert('Validation', 'Please enter both email and password.');
+      console.log('Alert: Validation - Please enter both email and password.');
       return;
     }
     try {
@@ -75,55 +85,51 @@ const AuthScreen = ({ navigation }) => {
       const users = stored ? JSON.parse(stored) : [];
       const found = users.find(u => u.email.toLowerCase() === email.toLowerCase());
       if (!found) {
-        Alert.alert('Error', 'No account found with that email.');
+        console.log('Alert: Error - No account found with that email.');
         return;
       }
       if (found.password !== password) {
-        Alert.alert('Error', 'Incorrect password.');
+        console.log('Alert: Error - Incorrect password.');
         return;
       }
       await AsyncStorage.setItem('currentUser', email.toLowerCase());
-      Alert.alert('Success', 'Logged in!');
-      navigation.goBack();
+      console.log('Alert: Success - Logged in!');
+      navigation.getParent().navigate('Portfolio');
     } catch (err) {
       console.error(err);
-      Alert.alert('Error', 'Login failed.');
+      console.log('Alert: Error - Login failed.');
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles(colors).container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
-    >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-        <View style={styles(colors).header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles(colors).backButton}>
-            <Text style={styles(colors).backText}>&larr; Back</Text>
-          </TouchableOpacity>
-          <Text style={styles(colors).title}>Account</Text>
-          <ThemeToggle />
-        </View>
+    <View style={styles(colors).container}>
+      <View style={styles(colors).header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles(colors).backButton}>
+          <Text style={styles(colors).backText}>&larr; Back</Text>
+        </TouchableOpacity>
+        <Text style={styles(colors).title}>{isSignup ? 'Create Account' : 'Log In'}</Text>
+        <ThemeToggle />
+      </View>
 
-        <View style={styles(colors).form}>
-          <TextInput
-            style={styles(colors).input}
-            placeholder="Email"
-            placeholderTextColor={colors.textSecondary}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles(colors).input}
-            placeholder="Password"
-            placeholderTextColor={colors.textSecondary}
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
+      <View style={styles(colors).form}>
+        <TextInput
+          style={styles(colors).input}
+          placeholder="Email"
+          placeholderTextColor={colors.textSecondary}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles(colors).input}
+          placeholder="Password"
+          placeholderTextColor={colors.textSecondary}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        {isSignup && (
           <TextInput
             style={styles(colors).input}
             placeholder="Confirm Password"
@@ -132,30 +138,19 @@ const AuthScreen = ({ navigation }) => {
             value={confirm}
             onChangeText={setConfirm}
           />
-          <TouchableOpacity
-            style={[styles(colors).button, styles(colors).signupButton]}
-            onPress={handleSignup}
-          >
-            <Text style={styles(colors).buttonText}>Create Account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles(colors).button, styles(colors).loginButton]}
-            onPress={handleLogin}
-          >
-            <Text style={styles(colors).buttonText}>Log In</Text>
-          </TouchableOpacity>
-        </View>
-        {/* debug: list stored users */}
-        {storedUsers.length > 0 && (
-          <View style={styles(colors).debugContainer}>
-            <Text style={styles(colors).debugTitle}>Saved users</Text>
-            {storedUsers.map((u, idx) => (
-              <Text key={idx} style={styles(colors).debugUser}>{u.email}</Text>
-            ))}
-          </View>
         )}
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <Button
+          title={isSignup ? 'Create Account' : 'Log In'}
+          onPress={isSignup ? handleSignup : handleLogin}
+          color={isSignup ? colors.positive : colors.primary}
+        />
+        <TouchableOpacity onPress={() => setIsSignup(!isSignup)}>
+          <Text style={styles(colors).switchText}>
+            {isSignup ? 'Already have an account? Log In' : 'Need an account? Sign Up'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
@@ -194,24 +189,6 @@ const styles = (colors) => StyleSheet.create({
   loginButton: {
     backgroundColor: colors.primary,
   },
-  debugContainer: {
-    margin: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    backgroundColor: colors.card,
-  },
-  debugTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: colors.text,
-    marginBottom: 5,
-  },
-  debugUser: {
-    fontSize: 12,
-    color: colors.textSecondary,
-  },
   form: {
     padding: 20,
   },
@@ -229,10 +206,16 @@ const styles = (colors) => StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginBottom: 15,
   },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  switchText: {
+    color: colors.primary,
+    textAlign: 'center',
+    fontSize: 14,
   },
 });
 

@@ -122,13 +122,18 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={styles(colors).headerRight}>  
           {currentUser ? (
-            <TouchableOpacity onPress={async () => { await AsyncStorage.removeItem('currentUser'); setCurrentUser(null); }} style={styles(colors).authButton}>
+            <TouchableOpacity onPress={async () => { await AsyncStorage.removeItem('portfolio_' + currentUser); await AsyncStorage.removeItem('currentUser'); setCurrentUser(null); }} style={styles(colors).authButton}>
               <Text style={styles(colors).authButtonText}>Logout</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={() => navigation.navigate('Auth', { mode: 'signup' })} style={styles(colors).authButton}>
-              <Text style={styles(colors).authButtonText}>Sign Up</Text>
-            </TouchableOpacity>
+            <View style={styles(colors).authButtons}>
+              <TouchableOpacity onPress={() => navigation.navigate('Auth', { mode: 'login' })} style={styles(colors).authButton}>
+                <Text style={styles(colors).authButtonText}>Log In</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Auth', { mode: 'signup' })} style={styles(colors).authButton}>
+                <Text style={styles(colors).authButtonText}>Sign Up</Text>
+              </TouchableOpacity>
+            </View>
           )}
           <ThemeToggle />
         </View>
@@ -238,6 +243,9 @@ const styles = (colors) => StyleSheet.create({
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  authButtons: {
+    flexDirection: 'row',
   },
   authButton: {
     marginRight: 10,
